@@ -1,0 +1,102 @@
+我在antigravity里完成了一个项目，我现在先在本地建Git，然后再保存到Github中，请帮我列出具体步骤
+一、在本地项目目录初始化 Git
+
+进入你的项目目录（Antigravity 生成的项目文件夹）：
+
+cd 你的项目路径
+
+初始化 Git 仓库：
+
+git init
+二、添加并提交代码
+
+先看看当前文件状态：
+
+git status
+
+添加所有文件：
+
+git add .
+
+做第一次提交：
+
+git commit -m "Initial commit"
+三、在 GitHub 上创建仓库
+
+打开 GitHub，然后：
+
+点击右上角 New repository
+输入仓库名（建议和项目名一致）
+不要勾选：
+Add README
+Add .gitignore
+点击 Create repository
+四、关联本地仓库和 GitHub
+
+GitHub 创建后会给你一段提示命令，你也可以直接用下面这套：
+
+git remote add origin https://github.com/你的用户名/仓库名.git
+
+验证是否成功：
+
+git remote -v
+五、推送代码到 GitHub
+
+第一次推送（非常关键的一步）：
+
+git branch -M main
+git push -u origin main
+
+👉 如果提示需要登录：
+
+现在 GitHub 用 Personal Access Token (PAT) 代替密码
+或你已经配置过 SSH，就会自动通过
+六、常见坑（你这个场景很容易遇到）
+1️⃣ 忘了 .gitignore
+
+如果你项目里有：
+
+node_modules
+.env
+编译产物
+
+建议现在补一个 .gitignore，否则仓库会很乱。
+
+2️⃣ 已经有远程 README 导致 push 失败
+
+如果你误勾选了 README，会报错：
+
+fatal: refusing to merge unrelated histories
+
+解决：
+
+git pull origin main --allow-unrelated-histories
+git push
+3️⃣ 分支不是 main
+
+有些系统默认是 master：
+
+git branch -M main
+七、一句话总结流程
+
+👉 本地：
+
+git init → git add . → git commit
+
+👉 GitHub：
+
+创建仓库 → git remote add → git push
+
+1. 别忘了创建 .gitignore 文件
+在上传之前，在你的项目文件夹里新建一个名为 .gitignore 的文本文档（注意前面有个点）。
+在这个文件里写上以下几行：
+
+Plaintext
+.venv/
+venv/
+__pycache__/
+build/
+dist/
+*.spec
+作用：它会告诉 GitHub “只保存我的源代码 .py 和说明文档”，
+而不要把几百 MB 的虚拟环境文件夹和临时打包文件传上去。这样你的仓库会非常轻量、干净。
