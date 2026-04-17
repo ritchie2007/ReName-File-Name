@@ -4,6 +4,7 @@ import re
 import sys
 
 def smart_rename():
+    # 设置成小写，文件名中不论大小写都能正确读出
     month_map = {
         'jan': '01', 'feb': '02', 'mar': '03', 'apr': '04',
         'may': '05', 'jun': '06', 'jul': '07', 'aug': '08',
