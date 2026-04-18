@@ -1,0 +1,46 @@
+针对 Windows 7 兼容性打包 的完整命令流程整理如下。
+
+你可以直接按顺序复制这些命令到 PowerShell 中执行：
+
+第一阶段：创建并进入“兼容环境”
+这一步利用 py 启动器调用系统中的 Python 3.8 版本（它是支持 Win7 的最后一个主要版本）。
+
+PowerShell
+# 1. 创建名为 win7_env 的虚拟环境
+py -3.8 -m venv win7_env
+
+# 2. 激活该环境
+.\win7_env\Scripts\activate
+第二阶段：环境初始化
+在激活的环境中（看到 (win7_env) 前缀后），安装必要的打包工具。
+
+PowerShell
+# 3. 升级 pip 确保稳定
+python -m pip install --upgrade pip
+de
+# 4. 安装打包工具 PyInstaller
+pip install pyinstaller
+
+# 5. (可选) 如果你的脚本有其他依赖，请在此安装
+# 例如：pip install requests
+第三阶段：执行打包
+确保你当前就在 smart_rename.py 所在的文件夹路径下。
+
+PowerShell
+# 6. 执行清理并重新打包成单文件
+pyinstaller --onefile --clean smart_rename.py
+第四阶段：后续处理
+打包完成后，你会得到一个兼容旧系统的版本。
+
+PowerShell
+# 7. 重命名以区分版本（建议操作）
+# 你可以在文件资源管理器中将 dist/smart_rename.exe 改名为 smart_rename_win7.exe
+
+# 8. 退出当前虚拟环境
+deactivate
+💡 为什么这样做有效？（核心原理）
+隔离性：通过虚拟环境，你避免了为了兼容旧机器而卸载你开发 Django/Vue 用的高版本 Python。
+
+依赖打包：PyInstaller 在 3.8 环境下运行时，会把 3.8 的运行库（Runtime）封装进 .exe。
+
+解决报错：由于 Python 3.8 不依赖 Windows 10 专有的 api-ms-win-core-path-l1-1-0.dll，所以打包出的程序在 Win7 上不会因找不到该 DLL 而崩溃。
